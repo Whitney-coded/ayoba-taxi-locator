@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// South African theme colors
+				'sa-green': '#007A4D', // South African flag green
+				'sa-yellow': '#FDB913', // South African flag yellow
+				'sa-red': '#E03C31', // South African flag red
+				'sa-blue': '#002395', // South African flag blue
+				'sa-black': '#000000', // South African flag black
+				'sa-white': '#FFFFFF', // South African flag white
+			},
+			fontFamily: {
+				'ubuntu': ['Ubuntu', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -70,25 +81,25 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'pulse-location': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.15)' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-location': 'pulse-location 2s infinite',
+			},
+			backgroundImage: {
+				'sa-gradient': 'linear-gradient(60deg, #007A4D 0%, #FDB913 50%, #E03C31 100%)',
 			}
 		}
 	},

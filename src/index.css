@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,6 +99,23 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-ubuntu;
   }
+}
+
+/* Map container styles */
+.mapboxgl-map {
+  @apply rounded-lg shadow-lg;
+}
+
+.mapboxgl-ctrl-logo {
+  @apply hidden;
+}
+
+.marker {
+  @apply bg-sa-red rounded-full w-5 h-5 flex items-center justify-center text-white animate-pulse-location;
+}
+
+.taxi-marker {
+  @apply bg-sa-yellow rounded-full w-6 h-6 flex items-center justify-center text-black font-bold border-2 border-sa-black;
 }
