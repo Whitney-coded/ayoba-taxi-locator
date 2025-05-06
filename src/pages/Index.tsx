@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '../components/Header';
 import Map from '../components/Map';
@@ -8,6 +9,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
+import { Calculator, Book, LogIn } from 'lucide-react';
 
 // WelcomeContent needs to be inside the language provider to access translations
 const WelcomeContent = () => {
@@ -26,9 +28,29 @@ const WelcomeContent = () => {
           
           <div className="border-t border-gray-200 pt-4 mt-4">
             <h3 className="font-bold text-sa-green mb-2">{t('travelingSoon')}</h3>
-            <Button className="w-full bg-sa-red hover:bg-sa-red/90 text-white">
+            <Button className="w-full bg-sa-red hover:bg-sa-red/90 text-white mb-4">
               {t('requestPickup')}
             </Button>
+            
+            <div className="grid grid-cols-1 gap-3 mt-6">
+              <Link to="/calculator">
+                <Button className="w-full bg-sa-green hover:bg-sa-green/90 flex items-center justify-center gap-2">
+                  <Calculator size={18} /> {t('calculator')}
+                </Button>
+              </Link>
+              
+              <Link to="/marketplace">
+                <Button className="w-full bg-sa-yellow hover:bg-sa-yellow/90 text-black flex items-center justify-center gap-2">
+                  <Book size={18} /> {t('bookMinibus')}
+                </Button>
+              </Link>
+              
+              <Link to="/login">
+                <Button variant="outline" className="w-full border-sa-blue text-sa-blue hover:bg-sa-blue/10 flex items-center justify-center gap-2">
+                  <LogIn size={18} /> {t('login')}
+                </Button>
+              </Link>
+            </div>
           </div>
         </Card>
         
