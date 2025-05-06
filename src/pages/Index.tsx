@@ -9,7 +9,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
-import { Calculator, Book, LogIn } from 'lucide-react';
+import { Calculator, Book } from 'lucide-react';
 
 // WelcomeContent needs to be inside the language provider to access translations
 const WelcomeContent = () => {
@@ -38,13 +38,7 @@ const WelcomeContent = () => {
               
               <Link to="/marketplace">
                 <Button className="w-full bg-sa-yellow hover:bg-sa-yellow/90 text-black flex items-center justify-center gap-2">
-                  <Book size={18} /> {t('bookMinibus')}
-                </Button>
-              </Link>
-              
-              <Link to="/login">
-                <Button variant="outline" className="w-full border-sa-blue text-sa-blue hover:bg-sa-blue/10 flex items-center justify-center gap-2">
-                  <LogIn size={18} /> {t('login')}
+                  <Book size={18} /> {t('taxiMarketplace')}
                 </Button>
               </Link>
             </div>

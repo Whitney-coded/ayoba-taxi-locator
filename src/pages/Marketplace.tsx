@@ -8,51 +8,76 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
-import LocationInput from '@/components/LocationInput';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar, Users, School } from 'lucide-react';
 
-// Sample data for minibus options
-const minibuses = [
+// Sample data for taxi service ads
+const taxiAds = [
   {
     id: 1,
-    name: 'Standard Minibus',
-    capacity: 14,
-    price: 450,
-    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Taxi%20Minibus',
-    features: ['Air conditioning', 'Radio', 'Standard seating']
+    title: 'School Transport - Cape Town',
+    type: 'school',
+    description: 'Daily school transport service from Khayelitsha to CBD schools. Safe and reliable.',
+    postedBy: 'Themba Taxi Services',
+    contact: '071 234 5678',
+    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/School%20Transport',
+    date: '2025-04-30'
   },
   {
     id: 2,
-    name: 'Luxury Minibus',
-    capacity: 12,
-    price: 700,
-    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Luxury%20Minibus',
-    features: ['Leather seats', 'WiFi', 'Refreshments', 'TV screens']
+    title: 'Wedding Transport - Durban',
+    type: 'wedding',
+    description: 'Luxury minibus for wedding transportation. Clean vehicles with professional drivers.',
+    postedBy: 'Dube Wedding Transport',
+    contact: '082 345 6789',
+    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Wedding%20Transport',
+    date: '2025-05-15'
   },
   {
     id: 3,
-    name: 'Economy Minibus',
-    capacity: 16,
-    price: 350,
-    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Economy%20Minibus',
-    features: ['Basic seating', 'Radio']
+    title: 'Corporate Events - Johannesburg',
+    type: 'corporate',
+    description: 'Corporate transport for events and airport transfers. Fleet of 20+ vehicles.',
+    postedBy: 'Executive Taxi Services',
+    contact: '083 456 7890',
+    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Corporate%20Transport',
+    date: '2025-05-01'
   },
   {
     id: 4,
-    name: 'Party Minibus',
-    capacity: 10,
-    price: 850,
-    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Party%20Minibus',
-    features: ['LED lights', 'Sound system', 'Party setup', 'Cooler']
+    title: 'Township Tours - Soweto',
+    type: 'tour',
+    description: 'Experience authentic township culture with our guided tours. Local knowledge guaranteed.',
+    postedBy: 'Soweto Explorer Taxis',
+    contact: '084 567 8901',
+    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Township%20Tours',
+    date: '2025-04-28'
+  },
+];
+
+// Sample user requests
+const userRequests = [
+  {
+    id: 1,
+    title: 'Need School Transport in Pretoria',
+    type: 'school',
+    description: '2 children needing transport from Centurion to Pretoria East school, Mon-Fri.',
+    budget: '1500',
+    postedBy: 'Parent in need',
+    contact: '076 123 4567',
+    date: '2025-04-25'
+  },
+  {
+    id: 2,
+    title: 'Looking for Tour Guide with Minibus',
+    type: 'tour',
+    description: 'Family of 6 visiting Cape Town for 3 days, need transportation and guide.',
+    budget: '5000',
+    postedBy: 'Tourist Family',
+    contact: '079 234 5678',
+    date: '2025-05-10'
   },
 ];
 
@@ -60,25 +85,17 @@ const minibuses = [
 const MarketplaceContent = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const [selectedMinibus, setSelectedMinibus] = useState(null);
-  const [destination, setDestination] = useState('');
+  const [activeTab, setActiveTab] = useState('browse');
+  const [name, setName] = useState('');
+  const [contact, setContact] = useState('');
+  const [eventType, setEventType] = useState('');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [passengers, setPassengers] = useState(1);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [budget, setBudget] = useState('');
+  const [requirements, setRequirements] = useState('');
+  const [passengers, setPassengers] = useState('');
   
-  const handleLocationSelected = (location: string) => {
-    setDestination(location);
-  };
-
-  const handleBooking = (minibusId: number) => {
-    const selected = minibuses.find(bus => bus.id === minibusId);
-    setSelectedMinibus(selected);
-    setIsDrawerOpen(true);
-  };
-
-  const confirmBooking = () => {
-    if (!destination || !date || !time) {
+  const handlePostAd = () => {
+    if (!name || !contact || !eventType || !date || !requirements) {
       toast({
         title: t('bookingError'),
         description: t('fillAllFields'),
@@ -88,10 +105,26 @@ const MarketplaceContent = () => {
     }
 
     toast({
+      title: t('adPosted'),
+      description: t('adPostedDesc'),
+    });
+    
+    // Reset form
+    setName('');
+    setContact('');
+    setEventType('');
+    setDate('');
+    setBudget('');
+    setRequirements('');
+    setPassengers('');
+    setActiveTab('browse');
+  };
+
+  const handleContactDriver = (adId) => {
+    toast({
       title: t('bookingSuccess'),
       description: t('bookingConfirmed'),
     });
-    setIsDrawerOpen(false);
   };
 
   return (
@@ -99,139 +132,196 @@ const MarketplaceContent = () => {
       <Header />
       
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4 text-sa-black">{t('bookMinibus')}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-sa-black">{t('taxiMarketplace')}</h2>
         <p className="text-gray-600 mb-6">{t('minibusMarketplaceDesc')}</p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <Card className="bg-white shadow-md">
-            <CardHeader>
-              <CardTitle>{t('destination')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <LocationInput onLocationSelected={handleLocationSelected} />
-            </CardContent>
-          </Card>
+        <Tabs defaultValue="browse" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="browse">{t('browseAds')}</TabsTrigger>
+            <TabsTrigger value="post">{t('postRequirement')}</TabsTrigger>
+          </TabsList>
           
-          <Card className="bg-white shadow-md">
-            <CardHeader>
-              <CardTitle>{t('tripDetails')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="date">{t('date')}</Label>
-                  <Input 
-                    id="date" 
-                    type="date" 
-                    value={date} 
-                    onChange={(e) => setDate(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="time">{t('time')}</Label>
-                  <Input 
-                    id="time" 
-                    type="time" 
-                    value={time} 
-                    onChange={(e) => setTime(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="passengers">{t('passengers')}</Label>
-                  <Input 
-                    id="passengers" 
-                    type="number" 
-                    min="1" 
-                    max="16" 
-                    value={passengers} 
-                    onChange={(e) => setPassengers(parseInt(e.target.value))}
-                  />
-                </div>
+          <TabsContent value="browse" className="mt-6">
+            <div className="grid grid-cols-1 gap-6 mb-8">
+              <h3 className="text-xl font-bold text-sa-green">{t('availableServices')}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {taxiAds.map((ad) => (
+                  <Card key={ad.id} className="overflow-hidden bg-white shadow-md">
+                    <div className="h-48 bg-gray-200">
+                      <img 
+                        src={ad.image} 
+                        alt={ad.title} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        {ad.type === 'school' && <School size={18} />}
+                        {ad.type === 'wedding' && <Users size={18} />}
+                        {ad.type === 'corporate' && <Users size={18} />}
+                        {ad.type === 'tour' && <Calendar size={18} />}
+                        {ad.title}
+                      </CardTitle>
+                      <CardDescription>{ad.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-sm text-gray-600 mb-4">
+                        <p className="mb-1"><span className="font-medium">{t('postedBy')}:</span> {ad.postedBy}</p>
+                        <p><span className="font-medium">{t('postedOn')}:</span> {ad.date}</p>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button 
+                        className="bg-sa-green hover:bg-sa-green/90 text-white"
+                        onClick={() => handleContactDriver(ad.id)}
+                      >
+                        {t('contact')}: {ad.contact}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
-            </CardContent>
-          </Card>
-        </div>
-        
-        <h3 className="text-xl font-bold mb-4 text-sa-black">{t('availableMinibuses')}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {minibuses.map((minibus) => (
-            <Card key={minibus.id} className="overflow-hidden bg-white shadow-md">
-              <div className="h-48 bg-gray-200">
-                <img 
-                  src={minibus.image} 
-                  alt={minibus.name} 
-                  className="w-full h-full object-cover"
-                />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-6">
+              <h3 className="text-xl font-bold text-sa-blue">{t('postRequirement')}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {userRequests.map((request) => (
+                  <Card key={request.id} className="bg-white shadow-md">
+                    <CardHeader className="bg-sa-blue/10">
+                      <CardTitle className="flex items-center gap-2">
+                        {request.type === 'school' && <School size={18} />}
+                        {request.type === 'tour' && <Calendar size={18} />}
+                        {request.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm">{t('budget')}: R{request.budget}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      <p className="text-gray-600 mb-3">{request.description}</p>
+                      <div className="text-sm text-gray-600">
+                        <p className="mb-1"><span className="font-medium">{t('postedBy')}:</span> {request.postedBy}</p>
+                        <p><span className="font-medium">{t('postedOn')}:</span> {request.date}</p>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button 
+                        className="w-full bg-sa-yellow hover:bg-sa-yellow/90 text-black"
+                        onClick={() => handleContactDriver(request.id)}
+                      >
+                        {t('contact')}: {request.contact}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="post" className="mt-6">
+            <Card>
               <CardHeader>
-                <CardTitle>{minibus.name}</CardTitle>
-                <CardDescription>{t('capacity')}: {minibus.capacity} {t('passengers')}</CardDescription>
+                <CardTitle>{t('postRequirement')}</CardTitle>
+                <CardDescription>{t('minibusMarketplaceDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="list-disc list-inside text-sm text-gray-600 mb-4">
-                  {minibus.features.map((feature, index) => (
-                    <li key={index}>{feature}</li>
-                  ))}
-                </ul>
-                <div className="text-lg font-bold text-sa-green">
-                  R{minibus.price} <span className="text-sm font-normal text-gray-600">{t('perDay')}</span>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">{t('fullName')}</Label>
+                    <Input 
+                      id="name" 
+                      value={name} 
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="contact">{t('phoneNumber')}</Label>
+                    <Input 
+                      id="contact" 
+                      value={contact} 
+                      onChange={(e) => setContact(e.target.value)}
+                      placeholder="071 234 5678"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="eventType">{t('eventType')}</Label>
+                      <Select value={eventType} onValueChange={setEventType}>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t('eventType')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="school">{t('school')}</SelectItem>
+                          <SelectItem value="wedding">{t('wedding')}</SelectItem>
+                          <SelectItem value="tour">{t('tour')}</SelectItem>
+                          <SelectItem value="corporate">{t('corporate')}</SelectItem>
+                          <SelectItem value="other">{t('other')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="date">{t('date')}</Label>
+                      <Input 
+                        id="date" 
+                        type="date" 
+                        value={date} 
+                        onChange={(e) => setDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="budget">{t('budget')}</Label>
+                      <Input 
+                        id="budget" 
+                        type="number" 
+                        value={budget} 
+                        onChange={(e) => setBudget(e.target.value)}
+                        placeholder="1000"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="passengers">{t('passengers')}</Label>
+                      <Input 
+                        id="passengers" 
+                        type="number" 
+                        min="1" 
+                        value={passengers} 
+                        onChange={(e) => setPassengers(e.target.value)}
+                        placeholder="4"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="requirements">{t('requirements')}</Label>
+                    <Textarea 
+                      id="requirements" 
+                      value={requirements} 
+                      onChange={(e) => setRequirements(e.target.value)}
+                      placeholder="Describe your transport needs in detail..."
+                      rows={4}
+                    />
+                  </div>
                 </div>
               </CardContent>
               <CardFooter>
                 <Button 
-                  className="w-full bg-sa-yellow hover:bg-sa-yellow/90 text-black"
-                  onClick={() => handleBooking(minibus.id)}
+                  className="w-full bg-sa-green hover:bg-sa-green/90"
+                  onClick={handlePostAd}
                 >
-                  {t('book')}
+                  {t('postAd')}
                 </Button>
               </CardFooter>
             </Card>
-          ))}
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
-      
-      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>{t('confirmBooking')}</DrawerTitle>
-            <DrawerDescription>
-              {selectedMinibus && 
-                `${selectedMinibus.name} - R${selectedMinibus.price} ${t('perDay')}`
-              }
-            </DrawerDescription>
-          </DrawerHeader>
-          <div className="px-4 py-2">
-            <div className="grid gap-4 py-4">
-              <div className="space-y-2">
-                <p className="text-sm font-medium">{t('destination')}:</p>
-                <p className="text-sm text-gray-600">{destination || t('notSpecified')}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">{t('date')}:</p>
-                  <p className="text-sm text-gray-600">{date || t('notSpecified')}</p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">{t('time')}:</p>
-                  <p className="text-sm text-gray-600">{time || t('notSpecified')}</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium">{t('passengers')}:</p>
-                <p className="text-sm text-gray-600">{passengers}</p>
-              </div>
-            </div>
-          </div>
-          <DrawerFooter>
-            <Button onClick={confirmBooking} className="bg-sa-green hover:bg-sa-green/90">
-              {t('confirmAndPay')}
-            </Button>
-            <DrawerClose asChild>
-              <Button variant="outline">{t('cancel')}</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
     </div>
   );
 };
