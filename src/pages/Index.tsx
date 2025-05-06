@@ -28,9 +28,6 @@ const WelcomeContent = () => {
           
           <div className="border-t border-gray-200 pt-4 mt-4">
             <h3 className="font-bold text-sa-green mb-2">{t('travelingSoon')}</h3>
-            <Button className="w-full bg-sa-red hover:bg-sa-red/90 text-white mb-4">
-              {t('requestPickup')}
-            </Button>
             
             <div className="grid grid-cols-1 gap-3 mt-6">
               <Link to="/calculator">
