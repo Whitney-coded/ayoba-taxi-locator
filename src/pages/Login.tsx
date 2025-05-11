@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '@/components/Header';
@@ -25,6 +25,7 @@ import {
 const LoginContent = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const navigate = useNavigate(); // Add navigate hook for redirection
 
   // Form validation schema
   const formSchema = z.object({
@@ -53,6 +54,9 @@ const LoginContent = () => {
       title: t('loginSuccess'),
       description: t('welcomeBack'),
     });
+    
+    // Redirect to homepage after successful login
+    navigate('/');
   };
 
   return (
