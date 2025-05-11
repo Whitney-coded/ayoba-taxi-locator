@@ -21,36 +21,36 @@ const WelcomeContent = () => {
       
       <div className="grid gap-6 md:grid-cols-5">
         <Card className="p-4 md:col-span-2 bg-white shadow-md">
-          <h2 className="text-2xl font-bold mb-4 text-sa-black">{t('findTaxi')}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-quantum-purple">{t('findTaxi')}</h2>
           <p className="text-gray-600 mb-4">{t('welcomeMessage')}</p>
           
           <LocationInput />
           
           <div className="border-t border-gray-200 pt-4 mt-4">
-            <h3 className="font-bold text-sa-green mb-2">{t('travelingSoon')}</h3>
+            <h3 className="font-bold text-quantum-blend mb-2">{t('travelingSoon')}</h3>
             
             <div className="grid grid-cols-1 gap-3 mt-6">
               <Link to="/calculator">
-                <Button className="w-full bg-sa-green hover:bg-sa-green/90 flex items-center justify-center gap-2">
+                <Button className="w-full bg-quantum-purple hover:bg-quantum-purple/90 flex items-center justify-center gap-2">
                   <Calculator size={18} /> {t('calculator')}
                 </Button>
               </Link>
               
               <Link to="/marketplace">
-                <Button className="w-full bg-sa-yellow hover:bg-sa-yellow/90 text-black flex items-center justify-center gap-2">
+                <Button className="w-full bg-quantum-magenta hover:bg-quantum-magenta/90 text-white flex items-center justify-center gap-2">
                   <Book size={18} /> {t('taxiMarketplace')}
                 </Button>
               </Link>
 
               <div className="flex gap-2 mt-4">
                 <Link to="/login" className="flex-1">
-                  <Button variant="outline" className="w-full border-sa-blue text-sa-blue hover:bg-sa-blue/10 flex items-center justify-center gap-2">
+                  <Button variant="outline" className="w-full border-quantum-blend text-quantum-blend hover:bg-quantum-blend/10 flex items-center justify-center gap-2">
                     <LogIn size={16} /> {t('login')}
                   </Button>
                 </Link>
                 
                 <Link to="/signup" className="flex-1">
-                  <Button variant="outline" className="w-full border-sa-green text-sa-green hover:bg-sa-green/10 flex items-center justify-center gap-2">
+                  <Button variant="outline" className="w-full border-quantum-magenta text-quantum-magenta hover:bg-quantum-magenta/10 flex items-center justify-center gap-2">
                     <UserPlus size={16} /> {t('signUp')}
                   </Button>
                 </Link>
