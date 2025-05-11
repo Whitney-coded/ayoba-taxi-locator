@@ -1,9 +1,9 @@
-
 // This file contains translations for the application
 // When adding new translations, make sure to add them to all languages
 
 // Define the structure of the translations object
 export interface Translations {
+  appName: string;
   welcome: string;
   findTaxi: string;
   welcomeMessage: string;
@@ -69,7 +69,8 @@ export type SupportedLanguage = 'en' | 'zu' | 'xh' | 'af';
 
 // English translations
 export const enTranslations: Translations = {
-  welcome: "Welcome to TaxiMap",
+  appName: "Quantum GO",
+  welcome: "Welcome to Quantum GO",
   findTaxi: "Find a Taxi Near You",
   welcomeMessage: "Search for taxis in your area. Plan your trip with our easy-to-use tools.",
   fromWhere: "From where?",
@@ -89,12 +90,12 @@ export const enTranslations: Translations = {
   password: "Password",
   dontHaveAccount: "Don't have an account?",
   loginSuccess: "Successfully logged in!",
-  welcomeBack: "Welcome back to TaxiMap",
+  welcomeBack: "Welcome back to Quantum GO",
   name: "Full Name",
   confirmPassword: "Confirm Password",
   alreadyHaveAccount: "Already have an account?",
   signupSuccess: "Successfully signed up!",
-  thankYou: "Thank you for joining TaxiMap",
+  thankYou: "Thank you for joining Quantum GO",
   fullName: "Full Name",
   createAccount: "Create Account",
   accountCreated: "Your account has been created successfully!",
@@ -131,7 +132,8 @@ export const enTranslations: Translations = {
 
 // Afrikaans translations
 export const afTranslations: Translations = {
-  welcome: "Welkom by TaxiMap",
+  appName: "Quantum GO",
+  welcome: "Welkom by Quantum GO",
   findTaxi: "Vind 'n Taxi Naby Jou",
   welcomeMessage: "Soek vir taxis in jou area. Beplan jou reis met ons maklik-om-te-gebruik gereedskap.",
   fromWhere: "Waarvandaan?",
@@ -151,12 +153,12 @@ export const afTranslations: Translations = {
   password: "Wagwoord",
   dontHaveAccount: "Het jy nie 'n rekening nie?",
   loginSuccess: "Suksesvol ingeteken!",
-  welcomeBack: "Welkom terug by TaxiMap",
+  welcomeBack: "Welkom terug by Quantum GO",
   name: "Volle Naam",
   confirmPassword: "Bevestig Wagwoord",
   alreadyHaveAccount: "Het jy reeds 'n rekening?",
   signupSuccess: "Suksesvol geregistreer!",
-  thankYou: "Dankie dat jy by TaxiMap aangesluit het",
+  thankYou: "Dankie dat jy by Quantum GO aangesluit het",
   fullName: "Volle Naam",
   createAccount: "Skep Rekening",
   accountCreated: "Jou rekening is suksesvol geskep!",
@@ -193,7 +195,8 @@ export const afTranslations: Translations = {
 
 // Zulu translations
 export const zuTranslations: Translations = {
-  welcome: "Siyakwamukela ku-TaxiMap",
+  appName: "Quantum GO",
+  welcome: "Siyakwamukela ku-Quantum GO",
   findTaxi: "Thola i-Taxi Eduze Kwakho",
   welcomeMessage: "Sesha amatekisi endaweni yakho. Hlela uhambo lwakho ngamathuluzi ethu alula ukuwasebenzisa.",
   fromWhere: "Usuka kuphi?",
@@ -213,12 +216,12 @@ export const zuTranslations: Translations = {
   password: "Iphasiwedi",
   dontHaveAccount: "Awunalo ikhawundi?",
   loginSuccess: "Ungene ngempumelelo!",
-  welcomeBack: "Siyakwamukela futhi ku-TaxiMap",
+  welcomeBack: "Siyakwamukela futhi ku-Quantum GO",
   name: "Igama Eliphelele",
   confirmPassword: "Qinisekisa Iphasiwedi",
   alreadyHaveAccount: "Usuvele unalo ikhawundi?",
   signupSuccess: "Ubhalise ngempumelelo!",
-  thankYou: "Siyabonga ngokujoyina i-TaxiMap",
+  thankYou: "Siyabonga ngokujoyina i-Quantum GO",
   fullName: "Igama Eliphelele",
   createAccount: "Dala i-Akhawunti",
   accountCreated: "I-akhawunti yakho idalwe ngempumelelo!",
@@ -255,7 +258,8 @@ export const zuTranslations: Translations = {
 
 // Xhosa translations
 export const xhTranslations: Translations = {
-  welcome: "Wamkelekile kwi-TaxiMap",
+  appName: "Quantum GO",
+  welcome: "Wamkelekile kwi-Quantum GO",
   findTaxi: "Fumana i-Taxi Kufuphi Nawe",
   welcomeMessage: "Khangela iiteksi kwindawo yakho. Cwangcisa uhambo lwakho ngezixhobo zethu ezilula ukuzisebenzisa.",
   fromWhere: "Usuka phi?",
@@ -275,12 +279,12 @@ export const xhTranslations: Translations = {
   password: "Iphasiwedi",
   dontHaveAccount: "Awunayo i-akhawunti?",
   loginSuccess: "Ungene ngempumelelo!",
-  welcomeBack: "Wamkelekile kwakhona kwi-TaxiMap",
+  welcomeBack: "Wamkelekile kwakhona kwi-Quantum GO",
   name: "Igama Elipheleleyo",
   confirmPassword: "Qinisekisa Iphasiwedi",
   alreadyHaveAccount: "Sele unayo i-akhawunti?",
   signupSuccess: "Ubhalise ngempumelelo!",
-  thankYou: "Enkosi ngokujoyina i-TaxiMap",
+  thankYou: "Enkosi ngokujoyina i-Quantum GO",
   fullName: "Igama Elipheleleyo",
   createAccount: "Yenza i-Akhawunti",
   accountCreated: "I-akhawunti yakho yenziwe ngempumelelo!",
