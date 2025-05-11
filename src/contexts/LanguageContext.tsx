@@ -26,7 +26,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguage] = useState<SupportedLanguage>('en');
 
   const t = (key: string): string => {
-    return translations[language][key] || translations.en[key] || key;
+    return translations[language][key as keyof typeof translations[typeof language]] || 
+           translations.en[key as keyof typeof translations.en] || 
+           key;
   };
 
   return (
