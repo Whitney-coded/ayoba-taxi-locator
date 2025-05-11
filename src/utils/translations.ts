@@ -69,8 +69,8 @@ export type SupportedLanguage = 'en' | 'zu' | 'xh' | 'af';
 
 // English translations
 export const enTranslations: Translations = {
-  appName: "Quantum GO",
-  welcome: "Welcome to Quantum GO",
+  appName: "Ayoba Ride",
+  welcome: "Welcome to Ayoba Ride",
   findTaxi: "Find a Taxi Near You",
   welcomeMessage: "Search for taxis in your area. Plan your trip with our easy-to-use tools.",
   fromWhere: "From where?",
@@ -90,12 +90,12 @@ export const enTranslations: Translations = {
   password: "Password",
   dontHaveAccount: "Don't have an account?",
   loginSuccess: "Successfully logged in!",
-  welcomeBack: "Welcome back to Quantum GO",
+  welcomeBack: "Welcome back to Ayoba Ride",
   name: "Full Name",
   confirmPassword: "Confirm Password",
   alreadyHaveAccount: "Already have an account?",
   signupSuccess: "Successfully signed up!",
-  thankYou: "Thank you for joining Quantum GO",
+  thankYou: "Thank you for joining Ayoba Ride",
   fullName: "Full Name",
   createAccount: "Create Account",
   accountCreated: "Your account has been created successfully!",
@@ -132,8 +132,8 @@ export const enTranslations: Translations = {
 
 // Afrikaans translations
 export const afTranslations: Translations = {
-  appName: "Quantum GO",
-  welcome: "Welkom by Quantum GO",
+  appName: "Ayoba Ride",
+  welcome: "Welkom by Ayoba Ride",
   findTaxi: "Vind 'n Taxi Naby Jou",
   welcomeMessage: "Soek vir taxis in jou area. Beplan jou reis met ons maklik-om-te-gebruik gereedskap.",
   fromWhere: "Waarvandaan?",
@@ -153,12 +153,12 @@ export const afTranslations: Translations = {
   password: "Wagwoord",
   dontHaveAccount: "Het jy nie 'n rekening nie?",
   loginSuccess: "Suksesvol ingeteken!",
-  welcomeBack: "Welkom terug by Quantum GO",
+  welcomeBack: "Welkom terug by Ayoba Ride",
   name: "Volle Naam",
   confirmPassword: "Bevestig Wagwoord",
   alreadyHaveAccount: "Het jy reeds 'n rekening?",
   signupSuccess: "Suksesvol geregistreer!",
-  thankYou: "Dankie dat jy by Quantum GO aangesluit het",
+  thankYou: "Dankie dat jy by Ayoba Ride aangesluit het",
   fullName: "Volle Naam",
   createAccount: "Skep Rekening",
   accountCreated: "Jou rekening is suksesvol geskep!",
@@ -195,8 +195,8 @@ export const afTranslations: Translations = {
 
 // Zulu translations
 export const zuTranslations: Translations = {
-  appName: "Quantum GO",
-  welcome: "Siyakwamukela ku-Quantum GO",
+  appName: "Ayoba Ride",
+  welcome: "Siyakwamukela ku-Ayoba Ride",
   findTaxi: "Thola i-Taxi Eduze Kwakho",
   welcomeMessage: "Sesha amatekisi endaweni yakho. Hlela uhambo lwakho ngamathuluzi ethu alula ukuwasebenzisa.",
   fromWhere: "Usuka kuphi?",
@@ -216,12 +216,12 @@ export const zuTranslations: Translations = {
   password: "Iphasiwedi",
   dontHaveAccount: "Awunalo ikhawundi?",
   loginSuccess: "Ungene ngempumelelo!",
-  welcomeBack: "Siyakwamukela futhi ku-Quantum GO",
+  welcomeBack: "Siyakwamukela futhi ku-Ayoba Ride",
   name: "Igama Eliphelele",
   confirmPassword: "Qinisekisa Iphasiwedi",
   alreadyHaveAccount: "Usuvele unalo ikhawundi?",
   signupSuccess: "Ubhalise ngempumelelo!",
-  thankYou: "Siyabonga ngokujoyina i-Quantum GO",
+  thankYou: "Siyabonga ngokujoyina i-Ayoba Ride",
   fullName: "Igama Eliphelele",
   createAccount: "Dala i-Akhawunti",
   accountCreated: "I-akhawunti yakho idalwe ngempumelelo!",
@@ -258,8 +258,8 @@ export const zuTranslations: Translations = {
 
 // Xhosa translations
 export const xhTranslations: Translations = {
-  appName: "Quantum GO",
-  welcome: "Wamkelekile kwi-Quantum GO",
+  appName: "Ayoba Ride",
+  welcome: "Wamkelekile kwi-Ayoba Ride",
   findTaxi: "Fumana i-Taxi Kufuphi Nawe",
   welcomeMessage: "Khangela iiteksi kwindawo yakho. Cwangcisa uhambo lwakho ngezixhobo zethu ezilula ukuzisebenzisa.",
   fromWhere: "Usuka phi?",
@@ -279,12 +279,12 @@ export const xhTranslations: Translations = {
   password: "Iphasiwedi",
   dontHaveAccount: "Awunayo i-akhawunti?",
   loginSuccess: "Ungene ngempumelelo!",
-  welcomeBack: "Wamkelekile kwakhona kwi-Quantum GO",
+  welcomeBack: "Wamkelekile kwakhona kwi-Ayoba Ride",
   name: "Igama Elipheleleyo",
   confirmPassword: "Qinisekisa Iphasiwedi",
   alreadyHaveAccount: "Sele unayo i-akhawunti?",
   signupSuccess: "Ubhalise ngempumelelo!",
-  thankYou: "Enkosi ngokujoyina i-Quantum GO",
+  thankYou: "Enkosi ngokujoyina i-Ayoba Ride",
   fullName: "Igama Elipheleleyo",
   createAccount: "Yenza i-Akhawunti",
   accountCreated: "I-akhawunti yakho yenziwe ngempumelelo!",
