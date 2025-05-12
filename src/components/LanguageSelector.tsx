@@ -14,11 +14,13 @@ const LanguageSelector: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
 
   const languages: { code: SupportedLanguage; name: string }[] = [
-    { code: 'en', name: t('english') },
-    { code: 'zu', name: t('zulu') },
-    { code: 'xh', name: t('xhosa') },
-    { code: 'af', name: t('afrikaans') },
+    { code: 'en', name: 'English' },
+    { code: 'zu', name: 'isiZulu' },
+    { code: 'xh', name: 'isiXhosa' },
+    { code: 'af', name: 'Afrikaans' },
   ];
+
+  const languageName = languages.find(l => l.code === language)?.name || 'English';
 
   return (
     <DropdownMenu>
@@ -27,7 +29,7 @@ const LanguageSelector: React.FC = () => {
           <span className="rounded-full w-5 h-5 bg-quantum-purple flex items-center justify-center text-white text-xs font-bold">
             {language.toUpperCase()}
           </span>
-          <span>{languages.find(l => l.code === language)?.name}</span>
+          <span>{languageName}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
