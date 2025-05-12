@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '../components/Header';
 import Map from '../components/Map';
 import LocationInput from '../components/LocationInput';
@@ -11,8 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
 import { Calculator, Book, LogIn, UserPlus, Settings } from 'lucide-react';
 
-// WelcomeContent needs to be inside the language provider to access translations
-const WelcomeContent = () => {
+const Index = () => {
   const { t } = useLanguage();
   
   return (
@@ -68,15 +66,6 @@ const WelcomeContent = () => {
       </div>
       <Toaster />
     </div>
-  );
-};
-
-// Main component wrapped with LanguageProvider
-const Index = () => {
-  return (
-    <LanguageProvider>
-      <WelcomeContent />
-    </LanguageProvider>
   );
 };
 

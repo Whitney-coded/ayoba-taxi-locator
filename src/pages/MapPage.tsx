@@ -1,11 +1,10 @@
 
 import React from 'react';
-import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '../components/Header';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { MapPin, Navigation } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,10 +16,10 @@ const mockTaxis = [
   { id: 4, lat: -26.197, lng: 28.030, heading: 0, route: "Alexandra - Fourways" },
 ];
 
-// MapContent needs to be inside the language provider to access translations
-const MapContent = () => {
+const MapPage = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isSearching, setIsSearching] = React.useState(false);
   const [nearbyTaxis, setNearbyTaxis] = React.useState<any[]>([]);
   const [userLocation, setUserLocation] = React.useState<{ lat: number; lng: number } | null>(null);
@@ -129,15 +128,6 @@ const MapContent = () => {
       </div>
       <Toaster />
     </div>
-  );
-};
-
-// Main component wrapped with LanguageProvider
-const MapPage = () => {
-  return (
-    <LanguageProvider>
-      <MapContent />
-    </LanguageProvider>
   );
 };
 

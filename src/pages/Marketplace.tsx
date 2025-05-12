@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -81,8 +79,7 @@ const userRequests = [
   },
 ];
 
-// Marketplace page content that uses the language provider
-const MarketplaceContent = () => {
+const Marketplace = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('browse');
@@ -323,15 +320,6 @@ const MarketplaceContent = () => {
         </Tabs>
       </div>
     </div>
-  );
-};
-
-// Main component wrapped with LanguageProvider
-const Marketplace = () => {
-  return (
-    <LanguageProvider>
-      <MarketplaceContent />
-    </LanguageProvider>
   );
 };
 

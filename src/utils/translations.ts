@@ -1,4 +1,3 @@
-import { i18n } from 'i18next';
 
 export type TranslationKey =
   | 'appName'
@@ -49,13 +48,6 @@ export type Translations = {
     [key in TranslationKey]?: string;
   };
 };
-
-declare module 'i18next' {
-  interface CustomTypeOptions {
-    defaultNS: 'translation';
-    resources: Translations;
-  }
-}
 
 export const translations = {
   en: {

@@ -1,13 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -21,8 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Login page content that uses the language provider
-const LoginContent = () => {
+const Login = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate(); // Add navigate hook for redirection
@@ -65,7 +62,7 @@ const LoginContent = () => {
       
       <div className="flex justify-center py-8">
         <Card className="w-full max-w-md">
-          <CardHeader className="bg-sa-green text-white rounded-t-lg">
+          <CardHeader className="bg-quantum-purple text-white rounded-t-lg">
             <CardTitle className="text-center">{t('login')}</CardTitle>
           </CardHeader>
           
@@ -100,7 +97,7 @@ const LoginContent = () => {
                   )}
                 />
                 
-                <Button type="submit" className="w-full bg-sa-yellow hover:bg-sa-yellow/90 text-black">
+                <Button type="submit" className="w-full bg-quantum-purple hover:bg-quantum-purple/90 text-white">
                   {t('login')}
                 </Button>
               </form>
@@ -109,21 +106,12 @@ const LoginContent = () => {
           
           <CardFooter className="flex flex-col gap-4 pb-6">
             <div className="text-center text-sm">
-              {t('dontHaveAccount')} <Link to="/signup" className="text-sa-blue hover:underline font-medium">{t('signUp')}</Link>
+              {t('dontHaveAccount')} <Link to="/signup" className="text-quantum-purple hover:underline font-medium">{t('signUp')}</Link>
             </div>
           </CardFooter>
         </Card>
       </div>
     </div>
-  );
-};
-
-// Main component wrapped with LanguageProvider
-const Login = () => {
-  return (
-    <LanguageProvider>
-      <LoginContent />
-    </LanguageProvider>
   );
 };
 
