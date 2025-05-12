@@ -8,7 +8,6 @@ import Marketplace from './pages/Marketplace';
 import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import MapPage from './pages/MapPage';
 import './App.css';
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/map" element={<MapPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </LanguageProvider>

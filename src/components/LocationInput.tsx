@@ -2,11 +2,10 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { MapPin, Navigation, CarTaxiFront } from 'lucide-react';
+import { CarTaxiFront, Navigation } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { toast } from '@/components/ui/use-toast';
 
 interface LocationInputProps {
   onLocationSelected?: (location: string) => void;
@@ -14,7 +13,6 @@ interface LocationInputProps {
 
 const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => {
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const [destination, setDestination] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -53,11 +51,12 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
     if (onLocationSelected) {
       onLocationSelected(suggestion);
     }
-  };
-
-  const handlePinLocation = () => {
-    // Navigate to the map page
-    navigate('/map');
+    
+    // Show toast notification instead of navigating
+    toast({
+      title: t('destinationSelected'),
+      description: suggestion,
+    });
   };
 
   return (
@@ -76,12 +75,6 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
             <CarTaxiFront className="absolute left-3 top-1/2 transform -translate-y-1/2 text-quantum-purple" size={16} />
           </div>
         </div>
-        <Button 
-          className={`${isMobile ? 'w-full' : ''} bg-quantum-purple hover:bg-quantum-purple/90 text-white`}
-          onClick={handlePinLocation}
-        >
-          <MapPin className="w-4 h-4 mr-2" /> {t('pinLocation')}
-        </Button>
       </div>
       
       {isInputFocused && suggestions.length > 0 && (
