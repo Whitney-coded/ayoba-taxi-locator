@@ -27,9 +27,21 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   const t = (key: string): string => {
     if (!key) return '';
-    return translations[language]?.[key as keyof typeof translations[typeof language]] || 
-           translations.en?.[key as keyof typeof translations.en] || 
-           key;
+    
+    // Handle key lookup safely
+    const currentTranslations = translations[language];
+    if (currentTranslations && key in currentTranslations) {
+      return currentTranslations[key];
+    }
+    
+    // Fallback to English
+    const englishTranslations = translations['en'];
+    if (englishTranslations && key in englishTranslations) {
+      return englishTranslations[key];
+    }
+    
+    // Last resort fallback to the key itself
+    return key;
   };
 
   const contextValue: LanguageContextType = {

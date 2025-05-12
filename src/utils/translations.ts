@@ -5,9 +5,8 @@ interface TranslationSet {
   [key: string]: string;
 }
 
-interface TranslationMap {
-  [key in SupportedLanguage]: TranslationSet;
-}
+// Using Record instead of the mapped type syntax that's causing issues
+type TranslationMap = Record<SupportedLanguage, TranslationSet>;
 
 export const translations: TranslationMap = {
   en: {
