@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { MapPin, Navigation } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 interface LocationInputProps {
   onLocationSelected?: (location: string) => void;
@@ -12,6 +13,7 @@ interface LocationInputProps {
 
 const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [destination, setDestination] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -51,6 +53,11 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
     }
   };
 
+  const handlePinLocation = () => {
+    // Navigate to the map page
+    navigate('/map');
+  };
+
   return (
     <div className="relative mb-4">
       <div className="flex items-center gap-2">
@@ -59,12 +66,15 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
             placeholder={t('whereToGo')}
             value={destination}
             onChange={handleInputChange}
-            className="bg-white border-sa-green"
+            className="bg-white border-quantum-purple"
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setTimeout(() => setIsInputFocused(false), 200)}
           />
         </div>
-        <Button className="bg-sa-yellow hover:bg-sa-yellow/90 text-black">
+        <Button 
+          className="bg-quantum-purple hover:bg-quantum-purple/90 text-white"
+          onClick={handlePinLocation}
+        >
           <MapPin className="w-4 h-4 mr-2" /> {t('pinLocation')}
         </Button>
       </div>
@@ -77,7 +87,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
               className="p-2 hover:bg-gray-100 cursor-pointer rounded flex items-center"
               onClick={() => handleSuggestionClick(suggestion)}
             >
-              <Navigation className="w-4 h-4 mr-2 text-sa-black" />
+              <Navigation className="w-4 h-4 mr-2 text-quantum-purple" />
               <span>{suggestion}</span>
             </div>
           ))}

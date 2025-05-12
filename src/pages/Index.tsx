@@ -9,7 +9,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
-import { Calculator, Book, LogIn, UserPlus } from 'lucide-react';
+import { Calculator, Book, LogIn, UserPlus, Tool } from 'lucide-react';
 
 // WelcomeContent needs to be inside the language provider to access translations
 const WelcomeContent = () => {
@@ -27,7 +27,10 @@ const WelcomeContent = () => {
           <LocationInput />
           
           <div className="border-t border-gray-200 pt-4 mt-4">
-            <h3 className="font-bold text-quantum-blend mb-2">{t('travelingSoon')}</h3>
+            <div className="flex items-center mb-4">
+              <Tool size={18} className="text-black mr-2" />
+              <h3 className="font-bold text-black">{t('toolsForJourney')}</h3>
+            </div>
             
             <div className="grid grid-cols-1 gap-3 mt-6">
               <Link to="/calculator">
@@ -44,13 +47,13 @@ const WelcomeContent = () => {
 
               <div className="flex gap-2 mt-4">
                 <Link to="/login" className="flex-1">
-                  <Button variant="outline" className="w-full border-quantum-blend text-quantum-blend hover:bg-quantum-blend/10 flex items-center justify-center gap-2">
+                  <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 flex items-center justify-center gap-2 border-black">
                     <LogIn size={16} /> {t('login')}
                   </Button>
                 </Link>
                 
                 <Link to="/signup" className="flex-1">
-                  <Button variant="outline" className="w-full border-quantum-magenta text-quantum-magenta hover:bg-quantum-magenta/10 flex items-center justify-center gap-2">
+                  <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 flex items-center justify-center gap-2 border-black">
                     <UserPlus size={16} /> {t('signUp')}
                   </Button>
                 </Link>
