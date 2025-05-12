@@ -8,7 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
-import { Calculator, Book, LogIn, UserPlus, Settings } from 'lucide-react';
+import { LogIn, UserPlus } from 'lucide-react';
 
 const Index = () => {
   const { t } = useLanguage();
@@ -25,37 +25,18 @@ const Index = () => {
           <LocationInput />
           
           <div className="border-t border-gray-200 pt-4 mt-4">
-            <div className="flex items-center mb-4">
-              <Settings size={18} className="text-black mr-2" />
-              <h3 className="font-bold text-black">{t('toolsForJourney')}</h3>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-3 mt-6">
-              <Link to="/calculator">
-                <Button className="w-full bg-quantum-purple hover:bg-quantum-purple/90 flex items-center justify-center gap-2">
-                  <Calculator size={18} /> {t('calculator')}
+            <div className="flex gap-2 mt-4">
+              <Link to="/login" className="flex-1">
+                <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 flex items-center justify-center gap-2 border-black">
+                  <LogIn size={16} /> {t('login')}
                 </Button>
               </Link>
               
-              <Link to="/marketplace">
-                <Button className="w-full bg-quantum-magenta hover:bg-quantum-magenta/90 text-white flex items-center justify-center gap-2">
-                  <Book size={18} /> {t('taxiMarketplace')}
+              <Link to="/signup" className="flex-1">
+                <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 flex items-center justify-center gap-2 border-black">
+                  <UserPlus size={16} /> {t('signUp')}
                 </Button>
               </Link>
-
-              <div className="flex gap-2 mt-4">
-                <Link to="/login" className="flex-1">
-                  <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 flex items-center justify-center gap-2 border-black">
-                    <LogIn size={16} /> {t('login')}
-                  </Button>
-                </Link>
-                
-                <Link to="/signup" className="flex-1">
-                  <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 flex items-center justify-center gap-2 border-black">
-                    <UserPlus size={16} /> {t('signUp')}
-                  </Button>
-                </Link>
-              </div>
             </div>
           </div>
         </Card>
