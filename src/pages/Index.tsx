@@ -9,7 +9,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
-import { Calculator, Book, LogIn, UserPlus, Tool } from 'lucide-react';
+import { Calculator, Book, LogIn, UserPlus, Settings } from 'lucide-react';
 
 // WelcomeContent needs to be inside the language provider to access translations
 const WelcomeContent = () => {
@@ -28,7 +28,7 @@ const WelcomeContent = () => {
           
           <div className="border-t border-gray-200 pt-4 mt-4">
             <div className="flex items-center mb-4">
-              <Tool size={18} className="text-black mr-2" />
+              <Settings size={18} className="text-black mr-2" />
               <h3 className="font-bold text-black">{t('toolsForJourney')}</h3>
             </div>
             

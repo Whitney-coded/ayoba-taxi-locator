@@ -36,13 +36,17 @@ export type TranslationKey =
   | 'currentLocation'
   | 'gpsLocation'
   | 'back'
-  | 'toolsForJourney';
+  | 'toolsForJourney'
+  | 'english'
+  | 'zulu'
+  | 'xhosa'
+  | 'afrikaans';
 
-export type Language = 'en' | 'zu' | 'af';
+export type SupportedLanguage = 'en' | 'zu' | 'af' | 'xh';
 
 export type Translations = {
-  [key in Language]: {
-    [key in TranslationKey]: string;
+  [key in SupportedLanguage]: {
+    [key in TranslationKey]?: string;
   };
 };
 
@@ -91,6 +95,10 @@ export const translations = {
     invalidEmail: 'Invalid email address',
     passwordLengthError: 'Password must be at least 6 characters',
     passwordsDontMatch: 'Passwords do not match',
+    english: 'English',
+    zulu: 'isiZulu',
+    xhosa: 'isiXhosa',
+    afrikaans: 'Afrikaans',
   },
   zu: {
     appName: 'Ayoba Ride',
@@ -129,6 +137,10 @@ export const translations = {
     invalidEmail: 'Ikheli le-imeyili elingavumelekile',
     passwordLengthError: 'Iphasiwedi kufanele ibe nezinhlamvu okungenani ezi-6',
     passwordsDontMatch: 'Amaphasiwedi awafani',
+    english: 'English',
+    zulu: 'isiZulu',
+    xhosa: 'isiXhosa',
+    afrikaans: 'Afrikaans',
   },
   af: {
     appName: 'Ayoba Rit',
@@ -167,7 +179,38 @@ export const translations = {
     invalidEmail: 'Ongeldige e-pos adres',
     passwordLengthError: 'Wagwoord moet ten minste 6 karakters wees',
     passwordsDontMatch: 'Wagwoorde stem nie ooreen nie',
+    english: 'English',
+    zulu: 'isiZulu',
+    xhosa: 'isiXhosa',
+    afrikaans: 'Afrikaans',
+  },
+  xh: {
+    appName: 'Ayoba Ride',
+    whereToGo: 'Ufuna ukuya phi?',
+    findTaxi: 'Fumana i-Taxi Kufuphi Nawe',
+    welcomeMessage: 'Wamkelekile ku-Ayoba Ride, indlela yakho ethembekileyo yokufumana iiteksi eMzantsi Afrika.',
+    travelingSoon: 'Ceba uhambo lwakho kunye nathi',
+    toolsForJourney: 'Izixhobo zohambo lwakho',
+    calculator: 'I-Calculator Yohambo',
+    taxiMarketplace: 'I-Tekisi Marketplace',
+    login: 'Ngena',
+    signUp: 'Bhalisa',
+    pinLocation: 'Indawo yePini',
+    loadingLocation: 'Ilayisha indawo yakho...',
+    findNearbyTaxis: 'Fumana iiteksi ezikufuphi',
+    searchingForTaxis: 'Iyakhangela...',
+    taxisFound: 'Iiteksi Zifunyanisiwe',
+    taxisNearby: 'iiteksi kufuphi nawe',
+    estimatedWait: 'Ixesha lokulinda eliqikelelweyo',
+    minutes: 'imizuzu',
+    currentLocation: 'Indawo Yangoku',
+    gpsLocation: 'Indawo ye-GPS',
+    back: 'Umva',
+    english: 'English',
+    zulu: 'isiZulu',
+    xhosa: 'isiXhosa',
+    afrikaans: 'Afrikaans',
   },
 };
 
-export const supportedLanguages = Object.keys(translations);
+export const supportedLanguages = Object.keys(translations) as SupportedLanguage[];

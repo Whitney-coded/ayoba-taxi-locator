@@ -1,5 +1,6 @@
 
 import { Routes, Route } from 'react-router-dom';
+import { LanguageProvider } from './contexts/LanguageContext';
 import Index from './pages/Index';
 import CalculatorPage from './pages/CalculatorPage';
 import Marketplace from './pages/Marketplace';
@@ -11,15 +12,17 @@ import './App.css';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/calculator" element={<CalculatorPage />} />
-      <Route path="/marketplace" element={<Marketplace />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/map" element={<MapPage />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <LanguageProvider>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/calculator" element={<CalculatorPage />} />
+        <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </LanguageProvider>
   );
 }
 
