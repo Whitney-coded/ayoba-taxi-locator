@@ -9,7 +9,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Users, School } from 'lucide-react';
+import { Calendar, Users, School, CarTaxiFront } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Sample data for taxi service ads
 const taxiAds = [
@@ -40,7 +41,7 @@ const taxiAds = [
     description: 'Corporate transport for events and airport transfers. Fleet of 20+ vehicles.',
     postedBy: 'Executive Taxi Services',
     contact: '083 456 7890',
-    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Corporate%20Transport',
+    image: 'https://placeholder.pics/svg/300x200/DEDEDE/555555/Minibus%20Taxi',
     date: '2025-05-01'
   },
   {
@@ -83,6 +84,7 @@ const Marketplace = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('browse');
+  const isMobile = useIsMobile();
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [eventType, setEventType] = useState('');
@@ -134,8 +136,12 @@ const Marketplace = () => {
         
         <Tabs defaultValue="browse" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="browse">{t('browseAds')}</TabsTrigger>
-            <TabsTrigger value="post">{t('postRequirement')}</TabsTrigger>
+            <TabsTrigger value="browse" className="data-[state=active]:bg-quantum-purple data-[state=active]:text-white">
+              {t('browseAds')}
+            </TabsTrigger>
+            <TabsTrigger value="post" className="data-[state=active]:bg-black data-[state=active]:text-white">
+              {t('postRequirement')}
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="browse" className="mt-6">
@@ -145,17 +151,23 @@ const Marketplace = () => {
                 {taxiAds.map((ad) => (
                   <Card key={ad.id} className="overflow-hidden bg-white shadow-md">
                     <div className="h-48 bg-gray-200">
-                      <img 
-                        src={ad.image} 
-                        alt={ad.title} 
-                        className="w-full h-full object-cover"
-                      />
+                      {ad.id === 3 ? (
+                        <div className="w-full h-full flex items-center justify-center bg-quantum-gradient bg-opacity-20">
+                          <CarTaxiFront size={isMobile ? 60 : 80} className="text-quantum-purple" />
+                        </div>
+                      ) : (
+                        <img 
+                          src={ad.image} 
+                          alt={ad.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </div>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         {ad.type === 'school' && <School size={18} />}
                         {ad.type === 'wedding' && <Users size={18} />}
-                        {ad.type === 'corporate' && <Users size={18} />}
+                        {ad.type === 'corporate' && <CarTaxiFront size={18} />}
                         {ad.type === 'tour' && <Calendar size={18} />}
                         {ad.title}
                       </CardTitle>
@@ -169,7 +181,7 @@ const Marketplace = () => {
                     </CardContent>
                     <CardFooter className="flex justify-between">
                       <Button 
-                        className="bg-sa-green hover:bg-sa-green/90 text-white"
+                        className={`${isMobile ? 'w-full' : ''} bg-quantum-purple hover:bg-quantum-purple/90 text-white`}
                         onClick={() => handleContactDriver(ad.id)}
                       >
                         {t('contact')}: {ad.contact}
@@ -309,7 +321,7 @@ const Marketplace = () => {
               </CardContent>
               <CardFooter>
                 <Button 
-                  className="w-full bg-sa-green hover:bg-sa-green/90"
+                  className="w-full bg-quantum-purple hover:bg-quantum-purple/90"
                   onClick={handlePostAd}
                 >
                   {t('postAd')}
