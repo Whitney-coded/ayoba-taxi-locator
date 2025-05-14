@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '@/components/Header';
 import Calculator from '@/components/Calculator';
 
-const CalculatorPage = () => {
+const CalculatorContent = () => {
   const { t } = useLanguage();
   
   return (
@@ -18,6 +19,15 @@ const CalculatorPage = () => {
         <Calculator />
       </div>
     </div>
+  );
+};
+
+// Main component wrapped with LanguageProvider
+const CalculatorPage = () => {
+  return (
+    <LanguageProvider>
+      <CalculatorContent />
+    </LanguageProvider>
   );
 };
 

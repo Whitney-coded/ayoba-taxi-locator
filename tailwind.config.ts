@@ -70,11 +70,6 @@ export default {
 				'sa-blue': '#002395', // South African flag blue
 				'sa-black': '#000000', // South African flag black
 				'sa-white': '#FFFFFF', // South African flag white
-				// New theme colors
-				'quantum-purple': '#9f2fff',
-				'quantum-magenta': '#b100e8',
-				'quantum-white': '#FFFFFF',
-				'quantum-blend': '#a819f3', // Mix of the two purple colors
 			},
 			fontFamily: {
 				'ubuntu': ['Ubuntu', 'sans-serif'],
@@ -105,7 +100,6 @@ export default {
 			},
 			backgroundImage: {
 				'sa-gradient': 'linear-gradient(60deg, #007A4D 0%, #FDB913 50%, #E03C31 100%)',
-				'quantum-gradient': 'linear-gradient(60deg, #9f2fff 0%, #b100e8 50%, #a819f3 100%)',
 			}
 		}
 	},

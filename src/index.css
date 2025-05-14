@@ -113,9 +113,9 @@
 }
 
 .marker {
-  @apply bg-quantum-purple rounded-full w-5 h-5 flex items-center justify-center text-white animate-pulse-location;
+  @apply bg-sa-red rounded-full w-5 h-5 flex items-center justify-center text-white animate-pulse-location;
 }
 
 .taxi-marker {
-  @apply bg-quantum-magenta rounded-full w-6 h-6 flex items-center justify-center text-black font-bold border-2 border-sa-black;
+  @apply bg-sa-yellow rounded-full w-6 h-6 flex items-center justify-center text-black font-bold border-2 border-sa-black;
 }
