@@ -16,7 +16,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
 
-  // Mock location suggestions
+  // Mock location suggestions - can be enhanced with Google Places API
   const mockSuggestions = [
     "Sandton City Mall",
     "Park Station",
@@ -26,6 +26,8 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
     "Midrand",
     "Fourways Mall",
     "Rosebank",
+    "OR Tambo International Airport",
+    "Johannesburg CBD"
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +48,27 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
   const handleSuggestionClick = (suggestion: string) => {
     setDestination(suggestion);
     setSuggestions([]);
+    setIsInputFocused(false);
     if (onLocationSelected) {
       onLocationSelected(suggestion);
+    }
+  };
+
+  const handleCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // In a real app, you would reverse geocode this to get address
+          const locationText = `Current Location (${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)})`;
+          setDestination(locationText);
+          if (onLocationSelected) {
+            onLocationSelected(locationText);
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
     }
   };
 
@@ -64,8 +85,11 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelected }) => 
             onBlur={() => setTimeout(() => setIsInputFocused(false), 200)}
           />
         </div>
-        <Button className="bg-sa-yellow hover:bg-sa-yellow/90 text-black">
-          <MapPin className="w-4 h-4 mr-2" /> {t('pinLocation')}
+        <Button 
+          onClick={handleCurrentLocation}
+          className="bg-sa-yellow hover:bg-sa-yellow/90 text-black"
+        >
+          <MapPin className="w-4 h-4 mr-2" /> Use Current
         </Button>
       </div>
       

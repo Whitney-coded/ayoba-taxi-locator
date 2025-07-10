@@ -5,6 +5,9 @@ import { MapPin, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 
+// Google Maps API key
+const GOOGLE_MAPS_API_KEY = 'AIzaSyDwQEkZKtkCVQTuOoiSL0LH3wagDXkymhY';
+
 // Mock data for demonstration
 const mockTaxis = [
   { id: 1, lat: -26.195, lng: 28.034, heading: 45, route: "Sandton - Randburg" },
@@ -15,45 +18,150 @@ const mockTaxis = [
 
 const Map: React.FC = () => {
   const { t } = useLanguage();
-  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const googleMapRef = useRef<google.maps.Map | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [nearbyTaxis, setNearbyTaxis] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [pinnedLocation, setPinnedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
+  // Load Google Maps script
   useEffect(() => {
-    // In a real implementation, this would integrate with Mapbox or Google Maps
-    // For now, we'll just simulate the map with a placeholder
+    const loadGoogleMaps = () => {
+      if (window.google) {
+        initializeMap();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeMap;
+      document.head.appendChild(script);
+    };
+
+    loadGoogleMaps();
+  }, []);
+
+  const initializeMap = () => {
+    if (!mapRef.current) return;
+
+    // Default to Johannesburg
+    const defaultCenter = { lat: -26.2041, lng: 28.0473 };
     
-    // Simulate getting user's location
+    const map = new google.maps.Map(mapRef.current, {
+      zoom: 13,
+      center: defaultCenter,
+      styles: [
+        {
+          featureType: 'poi',
+          elementType: 'labels',
+          stylers: [{ visibility: 'off' }]
+        }
+      ]
+    });
+
+    googleMapRef.current = map;
+
+    // Add click listener for pinning locations
+    map.addListener('click', (event: google.maps.MapMouseEvent) => {
+      if (event.latLng) {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        setPinnedLocation({ lat, lng });
+        
+        // Add marker for pinned location
+        new google.maps.Marker({
+          position: { lat, lng },
+          map: map,
+          title: 'Pinned Location',
+          icon: {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ef4444">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3" fill="white"/>
+              </svg>
+            `),
+            scaledSize: new google.maps.Size(30, 30)
+          }
+        });
+
+        toast({
+          title: t('locationPinned'),
+          description: `Location pinned at ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
+        });
+      }
+    });
+
+    // Get user's current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
+          const userPos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
+          };
+          setUserLocation(userPos);
+          map.setCenter(userPos);
+          
+          // Add marker for user location
+          new google.maps.Marker({
+            position: userPos,
+            map: map,
+            title: 'Your Location',
+            icon: {
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#22c55e">
+                  <circle cx="12" cy="12" r="10" fill="#22c55e"/>
+                  <circle cx="12" cy="12" r="3" fill="white"/>
+                </svg>
+              `),
+              scaledSize: new google.maps.Size(20, 20)
+            }
           });
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Default to Johannesburg
-          setUserLocation({ lat: -26.2041, lng: 28.0473 });
+          setUserLocation(defaultCenter);
         }
       );
     } else {
-      // Default to Johannesburg
-      setUserLocation({ lat: -26.2041, lng: 28.0473 });
+      setUserLocation(defaultCenter);
     }
-  }, []);
+  };
 
   const findNearbyTaxis = () => {
-    if (!userLocation) return;
+    if (!userLocation && !pinnedLocation) return;
     
     setIsSearching(true);
+    
+    // Use pinned location if available, otherwise use user location
+    const searchLocation = pinnedLocation || userLocation;
     
     // Simulate API call to find nearby taxis
     setTimeout(() => {
       setNearbyTaxis(mockTaxis);
       setIsSearching(false);
+      
+      // Add taxi markers to map
+      if (googleMapRef.current) {
+        mockTaxis.forEach(taxi => {
+          new google.maps.Marker({
+            position: { lat: taxi.lat, lng: taxi.lng },
+            map: googleMapRef.current,
+            title: taxi.route,
+            icon: {
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#3b82f6" transform="rotate(${taxi.heading})">
+                  <polygon points="3,11 22,2 13,21 11,13 3,11" fill="#3b82f6"/>
+                </svg>
+              `),
+              scaledSize: new google.maps.Size(24, 24)
+            }
+          });
+        });
+      }
       
       toast({
         title: t('taxisFound'),
@@ -64,56 +172,35 @@ const Map: React.FC = () => {
 
   return (
     <div className="relative w-full h-[70vh] rounded-lg overflow-hidden bg-gray-100">
-      <div ref={mapContainerRef} className="w-full h-full relative">
-        {/* Simulated map UI for demonstration */}
-        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-          {userLocation ? (
-            <div className="w-full h-full relative bg-sa-gradient bg-opacity-10">
-              {/* Simulated map with South African styling */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-8 h-8 rounded-full bg-sa-red flex items-center justify-center text-white shadow-lg animate-pulse-location">
-                  <MapPin className="w-5 h-5" />
-                </div>
-              </div>
-              
-              {/* Render nearby taxis */}
-              {nearbyTaxis.map((taxi) => (
-                <div 
-                  key={taxi.id}
-                  className="absolute taxi-marker"
-                  style={{ 
-                    top: `calc(50% + ${(taxi.lat - (userLocation?.lat || 0)) * 1000}px)`, 
-                    left: `calc(50% + ${(taxi.lng - (userLocation?.lng || 0)) * 1000}px)` 
-                  }}
-                >
-                  <Navigation className="w-4 h-4" style={{ transform: `rotate(${taxi.heading}deg)` }} />
-                </div>
-              ))}
-              
-              <div className="absolute bottom-4 right-4 p-3 bg-white rounded-lg shadow-lg max-w-xs">
-                <p className="font-medium">{t('currentLocation')}: {userLocation ? 'GPS Location' : 'Unknown'}</p>
-                {nearbyTaxis.length > 0 && (
-                  <div className="mt-2">
-                    <p className="font-bold">{nearbyTaxis.length} {t('taxisNearby')}</p>
-                    <p className="text-sm text-gray-500">{t('estimatedWait')}: 3-5 {t('minutes')}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <p className="text-gray-500">{t('pinLocation')}</p>
-          )}
-        </div>
-      </div>
+      <div ref={mapRef} className="w-full h-full" />
       
-      <div className="absolute bottom-4 left-4 z-10">
+      <div className="absolute bottom-4 left-4 z-10 space-y-2">
         <Button 
           onClick={findNearbyTaxis} 
           className="bg-sa-green hover:bg-sa-green/90 text-white"
-          disabled={isSearching || !userLocation}
+          disabled={isSearching || (!userLocation && !pinnedLocation)}
         >
           {isSearching ? t('searchingForTaxis') : t('findNearbyTaxis')}
         </Button>
+        
+        {pinnedLocation && (
+          <div className="bg-white p-2 rounded-lg shadow-lg text-sm">
+            <p className="font-medium text-sa-black">Pinned Location:</p>
+            <p className="text-gray-600">
+              {pinnedLocation.lat.toFixed(4)}, {pinnedLocation.lng.toFixed(4)}
+            </p>
+          </div>
+        )}
+      </div>
+      
+      <div className="absolute top-4 right-4 bg-white p-3 rounded-lg shadow-lg max-w-xs">
+        <p className="text-sm text-gray-600 mb-2">Click on the map to pin a location</p>
+        {nearbyTaxis.length > 0 && (
+          <div>
+            <p className="font-bold text-sa-black">{nearbyTaxis.length} {t('taxisNearby')}</p>
+            <p className="text-sm text-gray-500">{t('estimatedWait')}: 3-5 {t('minutes')}</p>
+          </div>
+        )}
       </div>
     </div>
   );
