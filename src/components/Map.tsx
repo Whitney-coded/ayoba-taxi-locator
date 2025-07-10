@@ -23,7 +23,7 @@ const Map: React.FC = () => {
   const [pinnedLocation, setPinnedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   const handleMapLoad = (map: any) => {
-    console.log('Map loaded:', map ? 'Google Maps' : 'Fallback map');
+    console.log('Map loaded and ready');
     googleMapRef.current = map;
 
     // Get user's current location
@@ -37,30 +37,32 @@ const Map: React.FC = () => {
           console.log('User location obtained:', userPos);
           setUserLocation(userPos);
           
-          // Only set center if we have a real Google Maps instance
           if (map && map.setCenter) {
             map.setCenter(userPos);
+            map.setZoom(15);
           }
           addUserMarker(map, userPos);
+          
+          toast({
+            title: 'Location Found',
+            description: 'Your current location has been set',
+          });
         },
         (error) => {
           console.error("Error getting location:", error);
           const defaultCenter = { lat: -26.2041, lng: 28.0473 };
           setUserLocation(defaultCenter);
+          
+          if (map && map.setCenter) {
+            map.setCenter(defaultCenter);
+          }
+          
           toast({
             title: 'Location Access Denied',
             description: 'Using default location: Johannesburg, SA',
           });
         }
       );
-    } else {
-      console.log('Geolocation not supported');
-      const defaultCenter = { lat: -26.2041, lng: 28.0473 };
-      setUserLocation(defaultCenter);
-      toast({
-        title: 'Geolocation Not Supported',
-        description: 'Using default location: Johannesburg, SA',
-      });
     }
   };
 
@@ -71,34 +73,35 @@ const Map: React.FC = () => {
   };
 
   const findNearbyTaxis = () => {
-    if (!userLocation && !pinnedLocation) {
+    const searchLocation = pinnedLocation || userLocation;
+    
+    if (!searchLocation) {
       toast({
         title: 'No Location Set',
-        description: 'Please set your location first',
+        description: 'Please pin a location or allow location access',
       });
       return;
     }
     
-    console.log('Finding nearby taxis...');
+    console.log('Finding nearby taxis from:', searchLocation);
     setIsSearching(true);
     
-    // Simulate API call to find nearby taxis
+    // Simulate API call
     setTimeout(() => {
       setNearbyTaxis(mockTaxis);
       setIsSearching(false);
       
-      // Add taxi markers to map
       addTaxiMarkers(googleMapRef.current, mockTaxis);
       
       toast({
         title: t('taxisFound'),
         description: `${mockTaxis.length} ${t('taxisNearby')}`,
       });
-    }, 2000);
+    }, 1500);
   };
 
   return (
-    <div className="relative w-full h-[70vh] rounded-lg overflow-hidden bg-gray-100">
+    <div className="relative w-full h-[70vh] rounded-lg overflow-hidden bg-gray-100 shadow-lg">
       <MapContainer 
         onMapLoad={handleMapLoad}
         onLocationPin={handleLocationPin}

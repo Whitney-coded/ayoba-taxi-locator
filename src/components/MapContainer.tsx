@@ -11,16 +11,81 @@ const GOOGLE_MAPS_API_KEY = 'AIzaSyDwQEkZKtkCVQTuOoiSL0LH3wagDXkymhY';
 
 const MapContainer: React.FC<MapContainerProps> = ({ onMapLoad, onLocationPin }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [mapError, setMapError] = useState<string | null>(null);
-  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const googleMapInstance = useRef<any>(null);
 
   useEffect(() => {
-    console.log('MapContainer: Starting to load Google Maps');
+    console.log('MapContainer: Initializing Google Maps');
+    setIsLoading(true);
     
-    const loadGoogleMaps = () => {
+    const initializeGoogleMaps = () => {
+      if (!mapRef.current) {
+        console.error('Map container ref not available');
+        return;
+      }
+
+      try {
+        console.log('Creating Google Maps instance');
+        const defaultCenter = { lat: -26.2041, lng: 28.0473 }; // Johannesburg
+        
+        googleMapInstance.current = new window.google.maps.Map(mapRef.current, {
+          zoom: 13,
+          center: defaultCenter,
+          mapTypeControl: true,
+          streetViewControl: true,
+          fullscreenControl: true,
+          styles: [
+            {
+              featureType: 'poi',
+              elementType: 'labels',
+              stylers: [{ visibility: 'on' }]
+            }
+          ]
+        });
+
+        // Add click listener for location pinning
+        googleMapInstance.current.addListener('click', (event: any) => {
+          console.log('Map clicked at:', event.latLng.lat(), event.latLng.lng());
+          const location = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          };
+          onLocationPin(location);
+        });
+
+        console.log('Google Maps initialized successfully');
+        setIsLoading(false);
+        onMapLoad(googleMapInstance.current);
+        
+        toast({
+          title: 'Map Loaded',
+          description: 'Google Maps is ready to use',
+        });
+
+      } catch (error) {
+        console.error('Error initializing Google Maps:', error);
+        setIsLoading(false);
+        toast({
+          title: 'Map Error',
+          description: 'Failed to load Google Maps',
+          variant: 'destructive'
+        });
+      }
+    };
+
+    const loadGoogleMapsScript = () => {
+      // Check if Google Maps is already loaded
       if (window.google && window.google.maps) {
-        console.log('Google Maps already loaded');
-        initializeMap();
+        console.log('Google Maps already available');
+        initializeGoogleMaps();
+        return;
+      }
+
+      // Check if script is already being loaded
+      const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
+      if (existingScript) {
+        console.log('Google Maps script already exists, waiting for load');
+        existingScript.addEventListener('load', initializeGoogleMaps);
         return;
       }
 
@@ -29,132 +94,51 @@ const MapContainer: React.FC<MapContainerProps> = ({ onMapLoad, onLocationPin })
       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
       script.defer = true;
+      
       script.onload = () => {
         console.log('Google Maps script loaded successfully');
-        initializeMap();
+        initializeGoogleMaps();
       };
-      script.onerror = () => {
-        console.error('Failed to load Google Maps script');
-        setMapError('Failed to load Google Maps');
-        initializeFallbackMap();
+      
+      script.onerror = (error) => {
+        console.error('Failed to load Google Maps script:', error);
+        setIsLoading(false);
+        toast({
+          title: 'Script Load Error',
+          description: 'Failed to load Google Maps script',
+          variant: 'destructive'
+        });
       };
+      
       document.head.appendChild(script);
     };
 
-    const initializeMap = () => {
-      try {
-        if (!mapRef.current || !window.google || !window.google.maps) {
-          console.error('MapContainer: Missing required elements for map initialization');
-          initializeFallbackMap();
-          return;
-        }
+    loadGoogleMapsScript();
 
-        console.log('Initializing Google Maps');
-        const defaultCenter = { lat: -26.2041, lng: 28.0473 };
-        
-        const map = new window.google.maps.Map(mapRef.current, {
-          zoom: 13,
-          center: defaultCenter,
-          styles: [
-            {
-              featureType: 'poi',
-              elementType: 'labels',
-              stylers: [{ visibility: 'off' }]
-            }
-          ]
-        });
-
-        // Add click listener for pinning locations
-        map.addListener('click', (event: any) => {
-          console.log('Map clicked:', event.latLng);
-          if (event.latLng) {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-            onLocationPin({ lat, lng });
-          }
-        });
-
-        console.log('Google Maps initialized successfully');
-        setIsGoogleMapsLoaded(true);
-        onMapLoad(map);
-      } catch (error) {
-        console.error('Error initializing Google Maps:', error);
-        setMapError('Google Maps API error - billing not enabled');
-        initializeFallbackMap();
+    // Cleanup function
+    return () => {
+      if (googleMapInstance.current) {
+        // Clear all listeners
+        window.google?.maps?.event?.clearInstanceListeners(googleMapInstance.current);
       }
     };
-
-    const initializeFallbackMap = () => {
-      console.log('Initializing fallback map');
-      if (!mapRef.current) return;
-
-      // Create a simple interactive fallback map
-      mapRef.current.innerHTML = `
-        <div class="w-full h-full bg-gray-200 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-green-100 to-blue-100"></div>
-          <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-            <div class="bg-white rounded-lg shadow-lg p-6 max-w-md">
-              <h3 class="text-lg font-semibold text-gray-800 mb-2">Map Unavailable</h3>
-              <p class="text-gray-600 mb-4">Google Maps billing is not enabled for this API key.</p>
-              <div class="text-sm text-gray-500 mb-4">
-                <p>Default location: Johannesburg, South Africa</p>
-                <p>Lat: -26.2041, Lng: 28.0473</p>
-              </div>
-              <button 
-                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
-                onclick="window.mapContainer.pinLocation(-26.2041, 28.0473)"
-              >
-                Pin Default Location
-              </button>
-            </div>
-          </div>
-          <div class="absolute top-4 left-4 bg-white rounded p-2 shadow">
-            <p class="text-xs text-gray-600">Click to pin location</p>
-          </div>
-        </div>
-      `;
-
-      // Create global reference for button click
-      (window as any).mapContainer = {
-        pinLocation: (lat: number, lng: number) => {
-          console.log('Fallback map: Pinning location', { lat, lng });
-          onLocationPin({ lat, lng });
-          toast({
-            title: 'Location Pinned',
-            description: `Pinned at ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
-          });
-        }
-      };
-
-      // Add click handler to the fallback map
-      mapRef.current.addEventListener('click', (event) => {
-        const rect = mapRef.current!.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        
-        // Convert click position to rough coordinates (simplified)
-        const lat = -26.2041 + (y - rect.height / 2) * 0.001;
-        const lng = 28.0473 + (x - rect.width / 2) * 0.001;
-        
-        console.log('Fallback map clicked:', { lat, lng });
-        onLocationPin({ lat, lng });
-      });
-
-      // Signal that fallback map is ready
-      onMapLoad(null);
-    };
-
-    loadGoogleMaps();
   }, [onMapLoad, onLocationPin]);
 
   return (
     <div className="w-full h-full relative">
-      <div ref={mapRef} className="w-full h-full" />
-      {mapError && (
-        <div className="absolute top-2 right-2 bg-red-100 text-red-800 px-3 py-1 rounded text-sm">
-          {mapError}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg z-10">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sa-green mx-auto mb-2"></div>
+            <p className="text-gray-600">Loading Google Maps...</p>
+          </div>
         </div>
       )}
+      <div 
+        ref={mapRef} 
+        className="w-full h-full rounded-lg"
+        style={{ minHeight: '400px' }}
+      />
     </div>
   );
 };
