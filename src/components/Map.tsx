@@ -19,7 +19,7 @@ const mockTaxis = [
 const Map: React.FC = () => {
   const { t } = useLanguage();
   const mapRef = useRef<HTMLDivElement>(null);
-  const googleMapRef = useRef<google.maps.Map | null>(null);
+  const googleMapRef = useRef<any>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [nearbyTaxis, setNearbyTaxis] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -28,7 +28,7 @@ const Map: React.FC = () => {
   // Load Google Maps script
   useEffect(() => {
     const loadGoogleMaps = () => {
-      if (window.google) {
+      if (window.google && window.google.maps) {
         initializeMap();
         return;
       }
@@ -45,12 +45,12 @@ const Map: React.FC = () => {
   }, []);
 
   const initializeMap = () => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || !window.google || !window.google.maps) return;
 
     // Default to Johannesburg
     const defaultCenter = { lat: -26.2041, lng: 28.0473 };
     
-    const map = new google.maps.Map(mapRef.current, {
+    const map = new window.google.maps.Map(mapRef.current, {
       zoom: 13,
       center: defaultCenter,
       styles: [
@@ -65,14 +65,14 @@ const Map: React.FC = () => {
     googleMapRef.current = map;
 
     // Add click listener for pinning locations
-    map.addListener('click', (event: google.maps.MapMouseEvent) => {
+    map.addListener('click', (event: any) => {
       if (event.latLng) {
         const lat = event.latLng.lat();
         const lng = event.latLng.lng();
         setPinnedLocation({ lat, lng });
         
         // Add marker for pinned location
-        new google.maps.Marker({
+        new window.google.maps.Marker({
           position: { lat, lng },
           map: map,
           title: 'Pinned Location',
@@ -83,7 +83,7 @@ const Map: React.FC = () => {
                 <circle cx="12" cy="10" r="3" fill="white"/>
               </svg>
             `),
-            scaledSize: new google.maps.Size(30, 30)
+            scaledSize: new window.google.maps.Size(30, 30)
           }
         });
 
@@ -106,7 +106,7 @@ const Map: React.FC = () => {
           map.setCenter(userPos);
           
           // Add marker for user location
-          new google.maps.Marker({
+          new window.google.maps.Marker({
             position: userPos,
             map: map,
             title: 'Your Location',
@@ -117,7 +117,7 @@ const Map: React.FC = () => {
                   <circle cx="12" cy="12" r="3" fill="white"/>
                 </svg>
               `),
-              scaledSize: new google.maps.Size(20, 20)
+              scaledSize: new window.google.maps.Size(20, 20)
             }
           });
         },
@@ -145,9 +145,9 @@ const Map: React.FC = () => {
       setIsSearching(false);
       
       // Add taxi markers to map
-      if (googleMapRef.current) {
+      if (googleMapRef.current && window.google && window.google.maps) {
         mockTaxis.forEach(taxi => {
-          new google.maps.Marker({
+          new window.google.maps.Marker({
             position: { lat: taxi.lat, lng: taxi.lng },
             map: googleMapRef.current,
             title: taxi.route,
@@ -157,7 +157,7 @@ const Map: React.FC = () => {
                   <polygon points="3,11 22,2 13,21 11,13 3,11" fill="#3b82f6"/>
                 </svg>
               `),
-              scaledSize: new google.maps.Size(24, 24)
+              scaledSize: new window.google.maps.Size(24, 24)
             }
           });
         });
