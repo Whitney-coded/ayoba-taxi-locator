@@ -23,6 +23,7 @@ const Map: React.FC = () => {
   const [pinnedLocation, setPinnedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   const handleMapLoad = (map: any) => {
+    console.log('Map loaded:', map ? 'Google Maps' : 'Fallback map');
     googleMapRef.current = map;
 
     // Get user's current location
@@ -33,32 +34,52 @@ const Map: React.FC = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          console.log('User location obtained:', userPos);
           setUserLocation(userPos);
-          map.setCenter(userPos);
+          
+          // Only set center if we have a real Google Maps instance
+          if (map && map.setCenter) {
+            map.setCenter(userPos);
+          }
           addUserMarker(map, userPos);
         },
         (error) => {
           console.error("Error getting location:", error);
           const defaultCenter = { lat: -26.2041, lng: 28.0473 };
           setUserLocation(defaultCenter);
+          toast({
+            title: 'Location Access Denied',
+            description: 'Using default location: Johannesburg, SA',
+          });
         }
       );
     } else {
+      console.log('Geolocation not supported');
       const defaultCenter = { lat: -26.2041, lng: 28.0473 };
       setUserLocation(defaultCenter);
+      toast({
+        title: 'Geolocation Not Supported',
+        description: 'Using default location: Johannesburg, SA',
+      });
     }
   };
 
   const handleLocationPin = (location: { lat: number; lng: number }) => {
+    console.log('Location pinned:', location);
     setPinnedLocation(location);
-    if (googleMapRef.current) {
-      addPinMarker(googleMapRef.current, location);
-    }
+    addPinMarker(googleMapRef.current, location);
   };
 
   const findNearbyTaxis = () => {
-    if (!userLocation && !pinnedLocation) return;
+    if (!userLocation && !pinnedLocation) {
+      toast({
+        title: 'No Location Set',
+        description: 'Please set your location first',
+      });
+      return;
+    }
     
+    console.log('Finding nearby taxis...');
     setIsSearching(true);
     
     // Simulate API call to find nearby taxis
@@ -67,9 +88,7 @@ const Map: React.FC = () => {
       setIsSearching(false);
       
       // Add taxi markers to map
-      if (googleMapRef.current) {
-        addTaxiMarkers(googleMapRef.current, mockTaxis);
-      }
+      addTaxiMarkers(googleMapRef.current, mockTaxis);
       
       toast({
         title: t('taxisFound'),
