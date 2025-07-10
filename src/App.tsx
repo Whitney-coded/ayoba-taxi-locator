@@ -10,6 +10,8 @@ import CalculatorPage from "./pages/CalculatorPage";
 import Marketplace from "./pages/Marketplace";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/login" element={<Login />} />

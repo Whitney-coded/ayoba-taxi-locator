@@ -25,7 +25,7 @@ import {
 const LoginContent = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const navigate = useNavigate(); // Add navigate hook for redirection
+  const navigate = useNavigate();
 
   // Form validation schema
   const formSchema = z.object({
@@ -55,8 +55,8 @@ const LoginContent = () => {
       description: t('welcomeBack'),
     });
     
-    // Redirect to homepage after successful login
-    navigate('/');
+    // Redirect to dashboard after successful login
+    navigate('/dashboard');
   };
 
   return (
